@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  // url      = env("DATABASE_URL")
+}
+
+model calendar_events {
+  id          String    @id @db.Char(36)
+  title       String    @db.VarChar(150)
+  description String?   @db.Text
+  event_date  DateTime  @db.DateTime(0)
+  created_by  String?   @db.Char(36)
+  created_at  DateTime? @default(now()) @db.Timestamp(0)
+  users       users?    @relation(fields: [created_by], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "calendar_events_ibfk_1")
+
+  @@index([created_by], map: "created_by")
+}
+
+model ideas {
+  id          String         @id @db.Char(36)
+  title       String         @db.VarChar(150)
+  description String?        @db.Text
+  author_id   String?        @db.Char(36)
+  status      ideas_status
+  created_at  DateTime?      @default(now()) @db.Timestamp(0)
+  updated_at  DateTime?      @default(now()) @db.Timestamp(0)
+  category    ideas_category @default(Storytelling_Cinematic)
+  users       users?         @relation(fields: [author_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "ideas_ibfk_1")
+
+  @@index([author_id], map: "author_id")
+}
+
+model stats {
+  id         String           @id @db.Char(36)
+  name       String           @db.VarChar(100)
+  value      Decimal          @db.Decimal(10, 2)
+  related_to stats_related_to
+  created_at DateTime?        @default(now()) @db.Timestamp(0)
+}
+
+model users {
+  id              String            @id @db.Char(36)
+  name            String            @db.VarChar(100)
+  email           String            @unique(map: "email") @db.VarChar(100)
+  password_hash   String            @db.VarChar(255)
+  role            users_role
+  avatar_url      String?           @db.VarChar(255)
+  status          users_status
+  created_at      DateTime?         @default(now()) @db.Timestamp(0)
+  updated_at      DateTime?         @default(now()) @db.Timestamp(0)
+  calendar_events calendar_events[]
+  ideas           ideas[]
+  videos          videos[]
+}
+
+model videos {
+  id          String    @id @db.Char(36)
+  title       String    @db.VarChar(150)
+  url         String    @db.VarChar(255)
+  description String?   @db.Text
+  uploaded_by String?   @db.Char(36)
+  created_at  DateTime? @default(now()) @db.Timestamp(0)
+  users       users?    @relation(fields: [uploaded_by], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "videos_ibfk_1")
+
+  @@index([uploaded_by], map: "uploaded_by")
+}
+
+enum stats_related_to {
+  idea
+  video
+}
+
+enum users_role {
+  Admin
+  Editor
+  Viewer
+}
+
+enum ideas_status {
+  draft
+  published
+  archived
+}
+
+enum users_status {
+  active
+  inactive
+}
+
+enum ideas_category {
+  Storytelling_Cinematic @map("Storytelling Cinematic")
+  SkitComedy
+  Monolog
+}

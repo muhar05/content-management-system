@@ -149,23 +149,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-accent to-accent/50 rounded-xl p-6 border border-primary/10">
-        <div className="flex items-center gap-2 mb-4">
-          <Sparkles className="w-5 h-5 text-primary" />
-          <h2 className="font-semibold text-foreground">AI Insights</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {aiInsights.map((insight, index) => (
-            <div key={index} className="bg-card/80 rounded-lg p-4">
-              <p className="text-xs font-medium text-primary mb-1">
-                {insight.agent}
-              </p>
-              <p className="text-sm text-muted-foreground">{insight.message}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
       <div className="bg-card rounded-xl p-6 shadow-soft border border-border/50">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-semibold text-foreground">Upcoming Uploads</h2>

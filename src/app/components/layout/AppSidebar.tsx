@@ -10,6 +10,7 @@ import {
   Sparkles,
   Sun,
   Moon,
+  User2Icon,
 } from "lucide-react";
 import { cn } from "@/app/lib/utils";
 import { useEffect, useState } from "react";
@@ -19,6 +20,7 @@ const navItems = [
   { title: "Content Ideas", path: "/ideas", icon: Lightbulb },
   { title: "Video Production", path: "/production", icon: Video },
   { title: "Upload Calendar", path: "/calendar", icon: Calendar },
+  { title: "Users", path: "/users", icon: User2Icon },
 ];
 
 export const AppSidebar = () => {
